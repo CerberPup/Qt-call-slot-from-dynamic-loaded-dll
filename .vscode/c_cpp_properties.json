@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/home/wojtek/Dev/Qt/5.13.0/gcc_64/include"
+            ],
+            "defines": [],
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++20",
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 4
+}
