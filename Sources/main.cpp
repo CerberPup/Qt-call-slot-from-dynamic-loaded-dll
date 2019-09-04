@@ -11,59 +11,57 @@ inline bool file_exists (const std::string& name) {
 
 int main(int argc, char* argv[]) {
 
+    QApplication app(argc, argv);
+
     void *lib_handle = nullptr;
 
     if (file_exists("./libpizdryk.so"))
     {
         lib_handle = dlopen("./libpizdryk.so", RTLD_LAZY);
+        if (!lib_handle)
+        {
+            std::cout<< "Failed to load libpizdryk" << std::endl;
+        }
     }
-    
-    if (!lib_handle)
+    else
     {
         std::cout<< "Missing libpizdryk" << std::endl;
     }
 
-    typedef void (*list_widgets_funcptr)();
-    list_widgets_funcptr list_widgets = nullptr;
-    typedef void (*call_slot_funcptr)(std::string, std::string);
-    call_slot_funcptr call_slot = nullptr;
+    typedef void (*listen_funcptr)();
+    listen_funcptr listen = nullptr;
 
     if (lib_handle)
     {
-        list_widgets = reinterpret_cast<list_widgets_funcptr> (dlsym(lib_handle, "list_widgets"));
-        call_slot = reinterpret_cast<call_slot_funcptr> (dlsym(lib_handle, "call_slot"));
-    }
-    
-    if (dlerror() != NULL) 
-    {
-        exit(1);
+        listen = reinterpret_cast<listen_funcptr> (dlsym(lib_handle, "listen"));
+        if (listen)
+        {
+            listen();
+        }
+        else
+        {
+            std::cout << "Failed to find function \"listen\"" << std::endl;
+        }
+        
     }
 
-    QApplication app(argc, argv);
-    QPushButton hello( "Hello world!", 0 );
+    QPushButton Goodbye( "Goodbye world!", 0 );
     QPushButton callbutton( "call", 0 );
-    hello.resize( 100, 30 );
+    Goodbye.resize( 100, 30 );
     callbutton.resize(100,30);
-    hello.show();
+    Goodbye.show();
     callbutton.show();
-    hello.setObjectName("baton");
+    Goodbye.setObjectName("baton");
+    callbutton.setObjectName("Call");
 
-    if (list_widgets)
-    {
-        list_widgets();
-    }
-
-    QObject::connect(&hello, &QPushButton::clicked, [&] () 
+    QObject::connect(&Goodbye, &QPushButton::clicked, [&] () 
         {
             std::cout << "Button clicked" << std::endl;
             app.quit();
         });
     QObject::connect(&callbutton, &QPushButton::clicked, [&] () 
         {
-            if (call_slot)
-            {
-                call_slot("baton","clicked");
-            }
+            std::cout << "Call button clicked" << std::endl;
         });
     app.exec();
 

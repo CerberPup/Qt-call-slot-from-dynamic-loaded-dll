@@ -63,6 +63,10 @@
         "cinttypes": "cpp",
         "typeinfo": "cpp",
         "valarray": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "qtcpserver": "cpp",
+        "qtcpsocket": "cpp",
+        "qtwidgets": "cpp",
+        "qhostaddress": "cpp"
     }
 }

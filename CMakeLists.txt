@@ -9,7 +9,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories(Headers)
 include_directories(Libka)
 file(GLOB SOURCES
-    Libka/main.h
     Headers/*.h
     Sources/*.cpp
 )
@@ -25,15 +24,17 @@ if(CMAKE_VERSION VERSION_LESS "3.7.0")
 endif()
 
 find_package(Qt5 COMPONENTS Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core REQUIRED)
+find_package(Qt5 COMPONENTS Network REQUIRED)
 
-add_library(pizdryk SHARED Libka/main.cpp)
+add_library(pizdryk SHARED Libka/main.cpp Libka/main.h)
 
 add_executable(App ${SOURCES} )
 
 #TARGET_LINK_LIBRARIES(App pizdryk)
-target_link_libraries(App Qt5::Widgets)
+target_link_libraries(App Qt5::Widgets Qt5::Core Qt5::Network)
 target_link_libraries(App dl) #GLIBC
-target_link_libraries(pizdryk Qt5::Widgets)
+target_link_libraries(pizdryk Qt5::Widgets Qt5::Core Qt5::Network)
 
 set_target_properties(App     PROPERTIES CXX_STANDARD 20)
 set_target_properties(pizdryk PROPERTIES CXX_STANDARD 20)
