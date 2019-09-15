@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
 
     QPushButton Goodbye( "Goodbye world!", 0 );
     QPushButton callbutton( "call", 0 );
-    Goodbye.resize( 100, 30 );
+    Goodbye.resize( 160, 30 );
     callbutton.resize(100,30);
     Goodbye.show();
     callbutton.show();
